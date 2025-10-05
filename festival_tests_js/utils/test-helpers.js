@@ -35,7 +35,6 @@ export class TestHelpers {
       levelMaintained: finalLevel === originalLevel + 1,
       festivalInactive: !afterEndPokemon.properties["Festival Ativo"].checkbox,
 
-      // Detalhes para debugging
       details: {
         original: {
           attack: originalAttack,

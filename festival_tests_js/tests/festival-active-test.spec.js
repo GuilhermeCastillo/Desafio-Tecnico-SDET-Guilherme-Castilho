@@ -14,19 +14,16 @@ test.describe("Teste de Ativação do Festival", () => {
   });
 
   test.afterEach(async () => {
-    // Limpeza
     if (testPokemonId) {
       await notionAPI.deletePokemon(testPokemonId);
     }
   });
 
   test("Deve ativar o campo Festival Ativo quando festival inicia", async () => {
-    // Arrange - Criar um pokémon
     const testPokemon = CONSTANTS.TEST_POKEMONS.PIKACHU;
     const createdPokemon = await notionAPI.createPokemon(testPokemon);
     testPokemonId = createdPokemon.id;
 
-    // Pegar o pokémon original do banco
     const originalPokemon = await notionAPI.getPokemonByName(testPokemon.name);
     const originalFestivalActive =
       originalPokemon.properties["Festival Ativo"].checkbox;
@@ -34,10 +31,8 @@ test.describe("Teste de Ativação do Festival", () => {
     console.log("=== VALORES ORIGINAIS ===");
     console.log("Festival Ativo original:", originalFestivalActive);
 
-    // Act - Iniciar festival
     await festivalAPI.startFestival();
 
-    // Assert - Verificar se Festival Ativo foi ativado
     const updatedPokemon = await notionAPI.getPokemonByName(testPokemon.name);
     const updatedFestivalActive =
       updatedPokemon.properties["Festival Ativo"].checkbox;

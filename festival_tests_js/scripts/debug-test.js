@@ -8,7 +8,6 @@ async function debugTest() {
 
   console.log("=== TESTE DE DIAGNÓSTICO ===\n");
 
-  // 1. Primeiro, vamos ver o schema do banco
   try {
     console.log("1. Obtendo schema do banco...");
     const schema = await notionAPI.getDatabaseSchema();
@@ -19,14 +18,12 @@ async function debugTest() {
     return;
   }
 
-  // 2. Criar um pokémon de teste
   try {
     console.log("\n2. Criando pokémon de teste...");
     const testPokemon = CONSTANTS.TEST_POKEMONS.PIKACHU;
     const created = await notionAPI.createPokemon(testPokemon);
-    console.log("✅ Pokémon criado:", created.id);
+    console.log("Pokémon criado:", created.id);
 
-    // 3. Verificar se foi criado corretamente
     console.log("\n3. Verificando pokémon criado...");
     const pokemon = await notionAPI.getPokemonByName(testPokemon.name);
     console.log("Nome:", pokemon.properties.Nome?.title[0]?.text.content);
@@ -43,12 +40,10 @@ async function debugTest() {
       pokemon.properties["Festival Ativo"]?.checkbox
     );
 
-    // 4. Testar festival start
     console.log("\n4. Iniciando festival...");
     const startResult = await festivalAPI.startFestival();
     console.log("Resposta do festival start:", startResult);
 
-    // 5. Verificar mudanças
     console.log("\n5. Verificando após festival start...");
     const afterStart = await notionAPI.getPokemonByName(testPokemon.name);
     console.log("Nível após start:", afterStart.properties.Nível?.number);
@@ -60,12 +55,10 @@ async function debugTest() {
       afterStart.properties["Festival Ativo"]?.checkbox
     );
 
-    // 6. Testar festival end
     console.log("\n6. Encerrando festival...");
     const endResult = await festivalAPI.endFestival();
     console.log("Resposta do festival end:", endResult);
 
-    // 7. Verificar mudanças finais
     console.log("\n7. Verificando após festival end...");
     const afterEnd = await notionAPI.getPokemonByName(testPokemon.name);
     console.log("Nível após end:", afterEnd.properties.Nível?.number);
@@ -77,12 +70,11 @@ async function debugTest() {
       afterEnd.properties["Festival Ativo"]?.checkbox
     );
 
-    // 8. Limpar
     console.log("\n8. Limpando pokémon de teste...");
     await notionAPI.deletePokemon(created.id);
-    console.log("✅ Pokémon removido");
+    console.log("Pokémon removido");
   } catch (error) {
-    console.log("❌ Erro durante o teste:", error.message);
+    console.log("Erro durante o teste:", error.message);
   }
 }
 

@@ -12,7 +12,6 @@ async function setupTestPokemons() {
       await notionAPI.createPokemon(pokemon);
       console.log(`${pokemon.name} criado`);
 
-      // Aguarda 0.5 segundo entre cada criacao
       await new Promise((resolve) => setTimeout(resolve, 500));
     } catch (error) {
       console.log(`Erro ao criar ${pokemon.name}: ${error.message}`);

@@ -3,7 +3,7 @@ import { NotionAPI } from "../api/notion-api.js";
 import { FestivalAPI } from "../api/festival-api.js";
 import { CONSTANTS } from "../utils/constants.js";
 
-test.describe("Teste de Defense - Festival Start", () => {
+test.describe("Teste de Remoção de Stamina - Festival End", () => {
   let notionAPI;
   let festivalAPI;
   let testPokemonId;
@@ -19,26 +19,23 @@ test.describe("Teste de Defense - Festival Start", () => {
     }
   });
 
-  test("Deve aplicar +10 em Defense quando festival inicia", async () => {
+  test("Deve remover buff de Stamina quando festival encerra", async () => {
     const testPokemon = CONSTANTS.TEST_POKEMONS.PIKACHU;
     const createdPokemon = await notionAPI.createPokemon(testPokemon);
     testPokemonId = createdPokemon.id;
 
     const originalPokemon = await notionAPI.getPokemonByName(testPokemon.name);
-    const originalDefense = originalPokemon.properties.Defesa.number;
-
-    console.log("=== VALORES ORIGINAIS ===");
-    console.log("Defense original:", originalDefense);
+    const originalStamina = originalPokemon.properties.Stamina.number;
 
     await festivalAPI.startFestival();
+    await festivalAPI.endFestival();
 
-    const updatedPokemon = await notionAPI.getPokemonByName(testPokemon.name);
-    const updatedDefense = updatedPokemon.properties.Defesa.number;
+    const finalPokemon = await notionAPI.getPokemonByName(testPokemon.name);
+    const finalStamina = finalPokemon.properties.Stamina.number;
 
-    console.log("=== APÓS FESTIVAL START ===");
-    console.log("Defense atual:", updatedDefense);
-    console.log("Diferenca:", updatedDefense - originalDefense);
+    console.log("Stamina original:", originalStamina);
+    console.log("Stamina após end:", finalStamina);
 
-    expect(updatedDefense).toBe(originalDefense + 10);
+    expect(finalStamina).toBe(originalStamina);
   });
 });
