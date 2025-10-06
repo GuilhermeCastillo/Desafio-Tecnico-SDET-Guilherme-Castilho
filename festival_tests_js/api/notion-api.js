@@ -86,4 +86,73 @@ export class NotionAPI {
         pokemon.properties.Pokemon?.rich_text[0]?.text.content === "Pidgey"
     );
   }
+
+  async getDatabaseViews() {
+    const response = await fetch(
+      `${this.baseURL}/databases/${CONSTANTS.DATABASE_ID}`,
+      {
+        method: "GET",
+        headers: this.headers,
+      }
+    );
+    const database = await response.json();
+    return database.views || [];
+  }
+
+  async queryDatabaseWithFilter(filter) {
+    const response = await fetch(
+      `${this.baseURL}/databases/${CONSTANTS.DATABASE_ID}/query`,
+      {
+        method: "POST",
+        headers: this.headers,
+        body: JSON.stringify({ filter }),
+      }
+    );
+    return await response.json();
+  }
+
+  async queryDatabaseWithSorts(sorts) {
+    const response = await fetch(
+      `${this.baseURL}/databases/${CONSTANTS.DATABASE_ID}/query`,
+      {
+        method: "POST",
+        headers: this.headers,
+        body: JSON.stringify({ sorts }),
+      }
+    );
+    return await response.json();
+  }
+
+  // Filtro específico para Pidgeys
+  async getAllPidgeysWithFilter() {
+    const filter = {
+      property: "Pokemon",
+      rich_text: {
+        equals: "Pidgey",
+      },
+    };
+    return await this.queryDatabaseWithFilter(filter);
+  }
+
+  // Ordenação por nível (crescente)
+  async getPokemonsSortedByLevel() {
+    const sorts = [
+      {
+        property: "Nível",
+        direction: "ascending",
+      },
+    ];
+    return await this.queryDatabaseWithSorts(sorts);
+  }
+
+  // Ordenação por nível (decrescente)
+  async getPokemonsSortedByLevelDesc() {
+    const sorts = [
+      {
+        property: "Nível",
+        direction: "descending",
+      },
+    ];
+    return await this.queryDatabaseWithSorts(sorts);
+  }
 }
