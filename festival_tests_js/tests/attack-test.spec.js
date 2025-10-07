@@ -14,26 +14,22 @@ test.describe("Teste de Attack - Festival Start", () => {
   });
 
   test.afterEach(async () => {
-    // Limpeza
     if (testPokemonId) {
       await notionAPI.deletePokemon(testPokemonId);
     }
   });
 
   test("Deve aplicar +10 em Attack quando festival inicia", async () => {
-    // Arrange - Criar um pokémon
     const testPokemon = CONSTANTS.TEST_POKEMONS.PIKACHU;
     const createdPokemon = await notionAPI.createPokemon(testPokemon);
     testPokemonId = createdPokemon.id;
 
-    // Pegar o pokémon original do banco
     const originalPokemon = await notionAPI.getPokemonByName(testPokemon.name);
     const originalAttack = originalPokemon.properties.Ataque.number;
 
     console.log("=== VALORES ORIGINAIS ===");
     console.log("Attack original:", originalAttack);
 
-    // Act - Iniciar festival
     await festivalAPI.startFestival();
 
     // Assert - Verificar se Attack aumentou +10

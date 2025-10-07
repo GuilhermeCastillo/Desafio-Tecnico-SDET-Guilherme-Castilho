@@ -20,16 +20,13 @@ test.describe("Teste de Remoção de Attack - Festival End", () => {
   });
 
   test("Deve remover buff de Attack quando festival encerra", async () => {
-    // Arrange - Criar pokémon e iniciar festival
     const testPokemon = CONSTANTS.TEST_POKEMONS.PIKACHU;
     const createdPokemon = await notionAPI.createPokemon(testPokemon);
     testPokemonId = createdPokemon.id;
 
-    // Pegar valores originais
     const originalPokemon = await notionAPI.getPokemonByName(testPokemon.name);
     const originalAttack = originalPokemon.properties.Ataque.number;
 
-    // Iniciar festival primeiro
     await festivalAPI.startFestival();
     const afterStartPokemon = await notionAPI.getPokemonByName(
       testPokemon.name
@@ -40,7 +37,6 @@ test.describe("Teste de Remoção de Attack - Festival End", () => {
     console.log("Attack original:", originalAttack);
     console.log("Attack após start:", attackAfterStart);
 
-    // Act - Encerrar festival
     await festivalAPI.endFestival();
 
     // Assert - Verificar se Attack voltou ao original

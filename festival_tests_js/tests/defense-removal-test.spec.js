@@ -20,7 +20,6 @@ test.describe("Teste de Remoção de Defense - Festival End", () => {
   });
 
   test("Deve remover buff de Defense quando festival encerra", async () => {
-    // Arrange
     const testPokemon = CONSTANTS.TEST_POKEMONS.PIKACHU;
     const createdPokemon = await notionAPI.createPokemon(testPokemon);
     testPokemonId = createdPokemon.id;
@@ -31,7 +30,6 @@ test.describe("Teste de Remoção de Defense - Festival End", () => {
     await festivalAPI.startFestival();
     await festivalAPI.endFestival();
 
-    // Assert
     const finalPokemon = await notionAPI.getPokemonByName(testPokemon.name);
     const finalDefense = finalPokemon.properties.Defesa.number;
 

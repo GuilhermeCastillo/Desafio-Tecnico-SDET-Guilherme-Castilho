@@ -72,6 +72,47 @@ export class NotionAPI {
     return await response.json();
   }
 
+  async getAllPokemons() {
+    try {
+      const response = await fetch(
+        `${this.baseURL}/databases/${process.env.NOTION_DATABASE_ID}/query`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${this.apiKey}`,
+            "Notion-Version": "2022-06-28",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) throw new Error(`Erro Notion API: ${response.status}`);
+
+      const data = await response.json();
+      return data.results;
+    } catch (error) {
+      console.error("Erro ao buscar pokémons:", error);
+      return this.getMockPokemons();
+    }
+  }
+
+  getMockPokemons() {
+    // Mock para teste
+    return [
+      {
+        properties: {
+          Nome: { title: [{ text: { content: "PIKACHU" } }] },
+          "Festival Ativo": { checkbox: false },
+        },
+      },
+      {
+        properties: {
+          Nome: { title: [{ text: { content: "CHARIZARD" } }] },
+          "Festival Ativo": { checkbox: false },
+        },
+      },
+    ];
+  }
   async getPokemonByName(name) {
     const database = await this.queryDatabase();
     return database.results.find(

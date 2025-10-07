@@ -19,7 +19,7 @@ async function deleteAllPokemons() {
       return;
     }
 
-    console.log("\nIniciando deleção...");
+    console.log("Iniciando deleção...");
 
     for (const pokemon of allPokemons) {
       try {
@@ -27,7 +27,7 @@ async function deleteAllPokemons() {
           pokemon.properties.Nome?.title[0]?.text.content || "Sem nome";
         const pokemonId = pokemon.id;
 
-        console.log(`\nDeletando: ${pokemonName} (${pokemonId})`);
+        console.log(`Deletando: ${pokemonName} (${pokemonId})`);
 
         const result = await notionAPI.deletePokemon(pokemonId);
 
@@ -46,7 +46,7 @@ async function deleteAllPokemons() {
       }
     }
 
-    console.log("\nRELATÓRIO FINAL:");
+    console.log("RELATÓRIO FINAL:");
     console.log(`Deletados com sucesso: ${deletedCount}`);
     console.log(`Erros: ${errorCount}`);
     console.log(`Total processado: ${allPokemons.length}`);

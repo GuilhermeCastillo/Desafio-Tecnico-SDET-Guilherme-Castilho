@@ -1,3 +1,8 @@
+import { test, expect } from "@playwright/test";
+import { NotionAPI } from "../api/notion-api.js";
+import { FestivalAPI } from "../api/festival-api.js";
+import { CONSTANTS } from "../utils/constants.js";
+
 test.describe("Teste de Desativação do Festival - Festival End", () => {
   let notionAPI;
   let festivalAPI;
