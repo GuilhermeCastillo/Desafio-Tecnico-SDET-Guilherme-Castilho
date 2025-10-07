@@ -90,13 +90,4 @@ Validar o funcionamento correto do sistema do Festival dos Pássaros, garantindo
 | **Notion Database** | .env                                                     |
 | **Ferramenta**      | Playwright 1.40+                                         |
 
-### 9. METAS DE QUALIDADE
-
-- Cobertura de funcionalidades: 100%
-- Taxa de sucesso: ≥ 95%
-- Tempo de execução: < 5 minutos
-- Total de testes: 35 cenários
-
----
-
 _Responsável: Guilherme Castilho_
