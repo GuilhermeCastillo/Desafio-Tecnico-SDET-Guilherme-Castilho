@@ -6,7 +6,7 @@
 
 ### 1. RESUMO EXECUTIVO
 
-| Métrica                   | Resultado |
+| Métrica                    | Resultado |
 | -------------------------- | --------- |
 | Total de testes executados | 20        |
 | Testes bem-sucedidos       | 17        |
@@ -198,9 +198,9 @@
 
 - Festival Ativo = false após encerramento
 
-✅ **3 PASSARAM**
+✅ 2 **PASSARAM | ❌ 1 FALHARAM**
 
-- Ativar flag Festival Ativo ao iniciar
+- ~~Ativar flag Festival Ativo ao iniciar~~
 - Adiciona novo pokemon
 - Desativar flag Festival Ativo ao encerrar
 
