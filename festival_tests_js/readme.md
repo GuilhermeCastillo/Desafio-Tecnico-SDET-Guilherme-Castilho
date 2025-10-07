@@ -28,15 +28,6 @@ npm install
 
 **⚠️ IMPORTANTE: Crie o arquivo `.env` na raiz do projeto:**
 
-**env**
-
-```
-NOTION_KEY=""
-DATABASE_ID=""
-FESTIVAL_URL=https://voidr-challenge-785568282479.us-central1.run.app
-FESTIVAL_TOKEN=""
-```
-
 ### 4. Estrutura do arquivo `.env`
 
 | Variável         | Descrição                         | Obrigatório |
@@ -48,9 +39,7 @@ FESTIVAL_TOKEN=""
 
 ## Executando os Testes
 
-### Executar testes específicos
-
-**bash**
+## **bash**
 
 ```
 # Testes de Attack
