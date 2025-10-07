@@ -6,12 +6,12 @@
 
 ### 1. RESUMO EXECUTIVO
 
-| Métrica                    | Resultado |
+| Métrica                   | Resultado |
 | -------------------------- | --------- |
 | Total de testes executados | 20        |
-| Testes bem-sucedidos       |           |
-| Testes com falha           |           |
-| Taxa de sucesso            |           |
+| Testes bem-sucedidos       | 17        |
+| Testes com falha           | 3         |
+| Taxa de sucesso            | 0,85      |
 
 **Status Geral:** ✅ **SUCESSO PARCIAL**
 
@@ -140,7 +140,7 @@
 
 - Stamina final = Stamina original
 
-✅ 4 **PASSARAM** | ❌ 2 **FALHARAM**
+✅ 4 **PASSARAM** | ❌ 3 **FALHARAM**
 
 - Aplicar buff de +10 em Ataque ao iniciar festival
 - Aplicar buff de +10 em Defesa ao iniciar festival
