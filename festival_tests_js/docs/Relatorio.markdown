@@ -135,6 +135,24 @@
 
 ![1759865755727](image/Relatorio/1759865755727.png)
 
+![1759866063083](image/Relatorio/1759866063083.png)
+
+![1759866317618](image/Relatorio/1759866317618.png)
+
+![1759866456740](image/Relatorio/1759866456740.png)
+
+![1759866531302](image/Relatorio/1759866531302.png)
+
+![1759866645326](image/Relatorio/1759866645326.png)
+
+![1759866750837](image/Relatorio/1759866750837.png)
+
+![1759866872376](image/Relatorio/1759866872376.png)
+
+![1759866942915](image/Relatorio/1759866942915.png)
+
+![1759867080841](image/Relatorio/1759867080841.png)
+
 #### Padrão de Comportamento Observado:
 
 **text**
