@@ -1,41 +1,85 @@
 import { test, expect } from "@playwright/test";
 import { NotionAPI } from "../api/notion-api.js";
 import { FestivalAPI } from "../api/festival-api.js";
-import { CONSTANTS } from "../utils/constants.js";
 
 test.describe("Teste de Remoção de Defense - Festival End", () => {
   let notionAPI;
   let festivalAPI;
-  let testPokemonId;
+  let originalState = [];
 
   test.beforeAll(async () => {
     notionAPI = new NotionAPI();
     festivalAPI = new FestivalAPI();
   });
 
-  test.afterEach(async () => {
-    if (testPokemonId) {
-      await notionAPI.deletePokemon(testPokemonId);
-    }
-  });
-
   test("Deve remover buff de Defense quando festival encerra", async () => {
-    const testPokemon = CONSTANTS.TEST_POKEMONS.PIKACHU;
-    const createdPokemon = await notionAPI.createPokemon(testPokemon);
-    testPokemonId = createdPokemon.id;
+    // FASE 1: Capturar estado ANTES do festival
+    console.log("=== FASE 1: ESTADO ANTES DO FESTIVAL ===");
+    const databaseBefore = await notionAPI.queryDatabase();
+    originalState = databaseBefore.results.map((pokemon) => ({
+      id: pokemon.id,
+      name: pokemon.properties.Nome?.title[0]?.text.content,
+      originalDefense: pokemon.properties.Defesa?.number,
+    }));
 
-    const originalPokemon = await notionAPI.getPokemonByName(testPokemon.name);
-    const originalDefense = originalPokemon.properties.Defesa.number;
+    console.log(`Total de Pokémon na base: ${originalState.length}`);
+    originalState.forEach((p) => {
+      console.log(`   ${p.name}: Defense ${p.originalDefense}`);
+    });
 
-    await festivalAPI.startFestival();
-    await festivalAPI.endFestival();
+    // FASE 2: Iniciar festival
+    console.log("\n=== FASE 2: INICIANDO FESTIVAL ===");
+    const startResult = await festivalAPI.startFestival();
+    console.log("Resultado do festival start:", startResult);
 
-    const finalPokemon = await notionAPI.getPokemonByName(testPokemon.name);
-    const finalDefense = finalPokemon.properties.Defesa.number;
+    // FASE 3: Encerrar festival
+    console.log("\n=== FASE 3: ENCERRANDO FESTIVAL ===");
+    const endResult = await festivalAPI.endFestival();
+    console.log("Resultado do festival end:", endResult);
 
-    console.log("Defense original:", originalDefense);
-    console.log("Defense após end:", finalDefense);
+    // FASE 4: Verificar estado APÓS o festival
+    console.log("\n=== FASE 4: VALIDACAO DOS POKEMONS ===");
+    const databaseAfter = await notionAPI.queryDatabase();
+    const afterState = databaseAfter.results;
 
-    expect(finalDefense).toBe(originalDefense);
+    let allTestsPassed = true;
+
+    afterState.forEach((pokemon) => {
+      const name = pokemon.properties.Nome?.title[0]?.text.content;
+      const finalDefense = pokemon.properties.Defesa?.number;
+
+      const originalPokemon = originalState.find((p) => p.name === name);
+
+      if (originalPokemon) {
+        const expectedDefense = originalPokemon.originalDefense;
+        const actualDefense = finalDefense;
+        const testPassed = actualDefense === expectedDefense;
+
+        if (testPassed) {
+          console.log(
+            `[PASS] ${name}: ${actualDefense} (manteve o valor original)`
+          );
+        } else {
+          console.log(
+            `[FAIL] ${name}: ${originalPokemon.originalDefense} -> ${actualDefense} (expected: ${expectedDefense})`
+          );
+          allTestsPassed = false;
+        }
+      }
+    });
+
+    // Assert final
+    console.log("\n=== RESULTADO FINAL ===");
+    if (allTestsPassed) {
+      console.log(
+        "SUCESSO: Todos os pokémons mantiveram o Defense original após o festival"
+      );
+    } else {
+      console.log(
+        "FALHA: Um ou mais pokémons não mantiveram o Defense original após o festival"
+      );
+    }
+
+    expect(allTestsPassed).toBe(true);
   });
 });
