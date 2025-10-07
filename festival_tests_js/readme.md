@@ -31,10 +31,10 @@ npm install
 **env**
 
 ```
-NOTION_KEY=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
-DATABASE_ID=281be79ab08580c6b0c6cf82bc505d80
+NOTION_KEY=""
+DATABASE_ID=""
 FESTIVAL_URL=https://voidr-challenge-785568282479.us-central1.run.app
-FESTIVAL_TOKEN=281be79ab085819aafcd000c9f02136a
+FESTIVAL_TOKEN=""
 ```
 
 ### 4. Estrutura do arquivo `.env`
