@@ -1,281 +1,174 @@
-# RELATÓRIO DE EXECUÇÃO - Festival dos Pássaros
-
-## Desafio Técnico SDET: Guilherme Castilho
-
----
-
 ### 1. RESUMO EXECUTIVO
 
 | Métrica                    | Resultado |
 | -------------------------- | --------- |
-| Total de testes executados | 20        |
-| Testes bem-sucedidos       | 17        |
+| Total de testes executados | 11        |
+| Testes bem-sucedidos       | 8         |
 | Testes com falha           | 3         |
-| Taxa de sucesso            | 0,85      |
+| Taxa de sucesso            | 72.7%     |
 
-**Status Geral:** ✅ **SUCESSO PARCIAL**
+**Status Geral:** ⚠️ **SUCESSO PARCIAL**
 
 ### 2. RESULTADOS DETALHADOS POR CATEGORIA
 
-#### Buffs Temporários (6 testes)
+#### 🎯 Buffs de Status - Festival Start (3 testes)
 
 ##### attack-test.spec.js
 
-**Objetivo:** Validar a aplicação correta do buff temporário de +10 em Attack durante o início do festival.
+**Status:** ✅ **SUCESSO**
 
-**Cenário Testado:**
-
-- Pokemon criado com stats base
-- Festival iniciado via API
-- Verificação do aumento de Attack
-
-**Fluxo do Teste:**
-
-1. Criar pokémon com Attack conhecido
-2. Registrar valor original do Attack
-3. Executar operação de start do festival
-4. Validar que Attack aumentou exatamente +10
-
-**Critério de Sucesso:**
-
-- Attack final = Attack original + 10
-
-##### attack-removal-test.spec.jsstamina-test.spec.js
-
-**Objetivo:** Validar a remoção correta do buff temporário de Attack após o encerramento do festival.
-
-**Cenário Testado:**
-
-- Ciclo completo: estado original → festival ativo → festival encerrado
-- Verificação da remoção do buff de +10 em Attack
-
-**Fluxo do Teste:**
-
-1. Criar pokémon com Attack conhecido
-2. Iniciar festival (aplica buff +10)
-3. Encerrar festival (deve remover buff)
-4. Validar que Attack retornou ao valor original
-
-**Critério de Sucesso:**
-
-- Attack final = Attack original (buff completamente removido)
+- **Objetivo:** Validar aplicação de +10 em Attack para TODOS os Pokémon
+- **Metodologia:** Captura estado antes → inicia festival → valida individualmente
+- **Resultado:** Todos os Pokémon receberam +10 de Attack corretamente
 
 ##### defense-test.spec.js
 
-**Objetivo:** Validar a aplicação correta do buff temporário de +10 em Defense durante o início do festival.
+**Status:** ✅ **SUCESSO**
 
-**Cenário Testado:**
-
-- Pokemon criado com stats base
-- Festival iniciado via API
-- Verificação do aumento de Defense
-
-**Fluxo do Teste:**
-
-1. Criar pokémon com Defense conhecido
-2. Registrar valor original da Defense
-3. Executar operação de start do festival
-4. Validar que Defense aumentou exatamente +10
-
-**Critério de Sucesso:**
-
-- Defense final = Defense original + 10
-
-##### defense-removal-test.spec.js
-
-**Objetivo:** Validar a remoção correta do buff temporário de Defense após o encerramento do festival.
-
-**Cenário Testado:**
-
-- Ciclo completo do festival com foco na Defense
-- Verificação da remoção do buff de +10
-
-**Fluxo do Teste:**
-
-1. Criar pokémon com Defense conhecido
-2. Executar ciclo completo do festival (start → end)
-3. Validar que Defense retornou ao valor original
-
-**Critério de Sucesso:**
-
-- Defense final = Defense original
+- **Objetivo:** Validar aplicação de +10 em Defense para TODOS os Pokémon
+- **Metodologia:** Teste completo da base com validação individual
+- **Resultado:** Aumento de Defense aplicado corretamente em todos
 
 ##### stamina-test.spec.js
 
-**Objetivo:** Validar a aplicação correta do buff temporário de +10 em Stamina durante o início do festival.
+**Status:** ✅ **SUCESSO**
 
-**Cenário Testado:**
+- **Objetivo:** Validar aplicação de +10 em Stamina para TODOS os Pokémon
+- **Metodologia:** Análise completa do estado antes/durante o festival
+- **Resultado:** Buff de Stamina aplicado uniformemente
 
-- Pokemon criado com stats base
-- Festival iniciado via API
-- Verificação do aumento de Stamina
+#### 🎯 Buffs de Status - Festival End (3 testes)
 
-**Fluxo do Teste:**
+##### attack-removal-test.spec.js
 
-1. Criar pokémon com Stamina conhecido
-2. Registrar valor original da Stamina
-3. Executar operação de start do festival
-4. Validar que Stamina aumentou exatamente +10
+**Status:** ❌ **FALHA**
 
-**Critério de Sucesso:**
+- **Objetivo:** Validar que Attack volta ao valor original após festival
+- **Problema Identificado:** Alguns Pokémon não retornaram ao Attack original
+- **Evidência:** Diferentes comportamentos entre Pokémon da base
 
-- Stamina final = Stamina original + 10
+##### defense-removal-test.spec.js
+
+**Status:** ❌ **FALHA**
+
+- **Objetivo:** Validar que Defense volta ao valor original após festival
+- **Problema Identificado:** Inconsistência na remoção do buff de Defense
+- **Evidência:** Pokémon específicos mantiveram Defense aumentada
 
 ##### stamina-removal-test.spec.js
 
-**Objetivo:** Validar a remoção correta do buff temporário de Stamina após o encerramento do festival.
+**Status:** ❌ **FALHA**
 
-**Cenário Testado:**
+- **Objetivo:** Validar que Stamina volta ao valor original após festival
+- **Problema Identificado:** Comportamento misto - alguns mantiveram aumento
+- **Evidência:** Sistema tratando Pokémon de forma diferente
 
-- Ciclo completo do festival com foco na Stamina
-- Verificação da remoção do buff de +10
-
-**Fluxo do Teste:**
-
-1. Criar pokémon com Stamina conhecido
-2. Executar ciclo completo do festival (start → end)
-3. Validar que Stamina retornou ao valor original
-
-**Critério de Sucesso:**
-
-- Stamina final = Stamina original
-
-✅ 4 **PASSARAM** | ❌ 3 **FALHARAM**
-
-- Aplicar buff de +10 em Ataque ao iniciar festival
-- Aplicar buff de +10 em Defesa ao iniciar festival
-- ~~Aplicar buff de +10 em Stamina ao iniciar festival~~
-- ~~Remover buff de Ataque ao encerrar festival~~
-- ~~Remover buff de Defesa ao encerrar festival~~
-- Remover buff de Stamina ao encerrar festival
-
-#### Nível Permanente (1 teste)
-
-##### level-maintenance-test.spec.js
-
-✅ **2 PASSARAM**
-
-- Aumentar nível permanentemente em +1
-- Nível deve permanecer aumentado após encerramento
-
-#### Flag Festival Ativo (3 testes)
+#### 🚩 Controle de Festival (2 testes)
 
 ##### festival-active-test.spec.js
 
-**Objetivo:** Validar que o aumento de nível é permanente e mantido após o encerramento do festival.
+**Status:** ✅ **SUCESSO**
 
-**Cenário Testado:**
-
-- Ciclo completo do festival com foco na permanência do nível
-- Verificação do aumento permanente de +1 nível
-
-**Fluxo do Teste:**
-
-1. Criar pokémon com nível conhecido
-2. Executar ciclo completo do festival (start → end)
-3. Validar que nível permaneceu aumentado em +1
-
-**Critério de Sucesso:**
-
-- Nível final = Nível original + 1
+- **Objetivo:** Validar ativação da flag "Festival Ativo" para TODOS
+- **Metodologia:** Verificação em massa do status do festival
+- **Resultado:** Todos os Pokémon corretamente marcados como participantes
 
 ##### festival-inactive-test.spec.js
 
-**Objetivo:** Validar que a flag "Festival Ativo" é corretamente desativada após o encerramento do festival.
+**Status:** ✅ **SUCESSO**
 
-**Cenário Testado:**
+- **Objetivo:** Validar desativação da flag "Festival Ativo" para TODOS
+- **Metodologia:** Ciclo completo com validação pós-festival
+- **Resultado:** Flag corretamente desativada em todos os Pokémon
 
-- Ciclo completo do festival com foco no gerenciamento da flag
-- Verificação da transição: ativo → inativo
+#### 📈 Nível Permanente (1 teste)
 
-**Fluxo do Teste:**
+##### level-maintenance-test.spec.js
 
-1. Criar pokémon
-2. Executar ciclo completo do festival (start → end)
-3. Validar que flag "Festival Ativo" está false
+**Status:** ✅ **SUCESSO**
 
-**Critério de Sucesso:**
+- **Objetivo:** Validar que aumento de nível é permanente
+- **Metodologia:** Ciclo completo start → end com verificação de nível
+- **Resultado:** Todos os Pokémon mantiveram o nível aumentado (+1)
 
-- Festival Ativo = false após encerramento
-
-✅ 2 **PASSARAM | ❌ 1 FALHARAM**
-
-- ~~Ativar flag Festival Ativo ao iniciar~~
-- Adiciona novo pokemon
-- Desativar flag Festival Ativo ao encerrar
-
-#### Evolução Pidgey (8 testes)
+#### 🐦 Evolução Pidgey (1 teste)
 
 ##### pidgey-evolution-test.spec.js
 
-**Objetivo:** Validar a lógica de evolução condicional do Pidgey conforme regras específicas de nível.
+**Status:** ✅ **SUCESSO**
 
-**Regras Testadas:**
+- **Objetivo:** Validar regras de evolução para TODOS os Pidgeys
+- **Cenários Testados:**
+  - Pidgey → Pidgeotto (nível ≥ 16)
+  - Pidgey → Pidgeot (nível ≥ 36)
+  - Pidgey mantém (nível < 16)
+  - Pidgeotto/Pidgeot não evoluem
+- **Resultado:** Todas as evoluções ocorreram conforme regras
 
-- Pidgey evolui para Pidgeotto ao atingir level ≥ 16
-- Pidgey evolui para Pidgeot ao atingir level ≥ 36
-- Apenas Pidgey sofre evolução (Pidgeotto/Pidgeot mantêm espécie)
+#### 👁️ Monitoramento (1 teste)
 
-**Cenários de Teste:**
+##### notion-views-test.spec.js
 
-1. **Level 15 → Pidgeotto** (15 + 1 = 16 ≥ 16)
-2. **Level 16 → Pidgeotto** (16 + 1 = 17 ≥ 16)
-3. **Level 35 → Pidgeot** (35 + 1 = 36 ≥ 36)
-4. **Level 36 → Pidgeot** (36 + 1 = 37 ≥ 36)
-5. **Level 14 → Pidgey** (14 + 1 = 15 < 16)
-6. **Level 34 → Pidgeotto** (34 + 1 = 35 ≥ 16)
-7. **Pidgeotto → Pidgeotto** (não evolui)
-8. **Pidgeot → Pidgeot** (mantém evolução)
+**Status:** ✅ **SUCESSO**
 
-**Critério de Sucesso:**
+- **Objetivo:** Validar visualizações e queries da base Notion
+- **Resultado:** API respondendo corretamente às consultas
 
-- Evolução ocorre conforme limiares de nível
-- Apenas Pidgey sofre evolução
-- Nível sempre aumenta +1
+### 3. ANÁLISE DE PROBLEMAS
 
-✅ 8 **PASSARAM**
+#### 🔴 Problemas Críticos Identificados:
 
-- Pidgey level 15 deve evoluir para Pidgeotto
-- Pidgey level 16 deve evoluir para Pidgeotto
-- Pidgey level 35 deve evoluir para Pidgeot
-- Pidgey level 36 deve evoluir para Pidgeot
-- Pidgey level 14 não deve evoluir
-- Pidgey level 34 deve evoluir para Pidgeotto
-- Pidgeotto não deve evoluir para Pidgeot
-- Pidgeot deve manter evolução
+1. **Remoção Inconsistente de Buffs**
+   - Attack, Defense e Stamina não estão sendo removidos uniformemente
+   - Alguns Pokémon mantêm buffs após festival terminar
+   - Comportamento varia entre diferentes Pokémon
+2. **Falta de Padronização**
+   - Sistema trata Pokémon de forma diferente sem critério claro
+   - Inconsistência nas operações de cleanup
 
-#### Novo Participante
+#### 🟡 Recomendações Imediatas:
 
-### 3. EVIDÊNCIAS COLETADAS
+1. **Auditar lógica de remoção de buffs**
+2. **Implementar tratamento uniforme para todos os Pokémon**
 
-#### Logs de Execução:
+### 4. EVIDÊNCIAS TÉCNICAS
 
-##### Buffs Temporários (6 testes)
+![1759865755727](image/Relatorio/1759865755727.png)
 
-![1759849236193](image/Relatorio/1759849236193.png)
+#### Padrão de Comportamento Observado:
 
-![1759849352487](image/Relatorio/1759849352487.png)
+**text**
 
-![1759849408475](image/Relatorio/1759849408475.png)
+```
+✅ SEMPRE FUNCIONA:
+   - Aplicação de buffs (+10 Attack/Defense/Stamina)
+   - Aumento permanente de nível (+1)
+   - Ativação/desativação da flag Festival
+   - Evoluções condicionais do Pidgey
 
-![1759849481933](image/Relatorio/1759849481933.png)
+❌ PROBLEMAS CONSISTENTES:
+   - Remoção de buffs após festival (inconsistente)
+   - Comportamento variável entre Pokémon
+```
 
-![1759851696324](image/Relatorio/1759851696324.png)
+### 5. CONCLUSÃO
 
-![1759850604171](image/Relatorio/1759850604171.png)
+**Pontos Fortes:**
 
-##### Nível Permanente (1 teste)
+- Sistema robusto na aplicação de benefícios
+- Evoluções funcionando perfeitamente
+- Controle de estado do festival eficiente
 
-![1759850908779](image/Relatorio/1759850908779.png)
+**Áreas de Melhoria:**
 
-##### Flag Festival Ativo (3 testes)
+- Consistência no tratamento de todos os Pokémon
+- Padronização das operações pós-festival
 
-![1759851076867](image/Relatorio/1759851076867.png)
+**Próximos Passos:**
 
-![1759851129592](image/Relatorio/1759851129592.png)
+1. Investigar causa raiz da inconsistência na remoção de buffs
+2. Implementar tratamento uniforme
 
-##### Evolução Pidgey (8 testes)
-
-![1759851433367](image/Relatorio/1759851433367.png)
+---
 
 _Executado por: Guilherme Castilho_

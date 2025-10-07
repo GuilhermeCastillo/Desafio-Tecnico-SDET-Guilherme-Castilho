@@ -30,7 +30,6 @@ test.describe("Teste de Remoção de Attack - Festival End", () => {
     const startResult = await festivalAPI.startFestival();
     console.log("Resultado do festival start:", startResult);
 
-    l;
     console.log("\n=== FASE 3: ENCERRANDO FESTIVAL ===");
     const endResult = await festivalAPI.endFestival();
     console.log("Resultado do festival end:", endResult);
