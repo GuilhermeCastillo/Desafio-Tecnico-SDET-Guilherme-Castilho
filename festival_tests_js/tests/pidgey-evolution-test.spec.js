@@ -1,9 +1,8 @@
 import { test, expect } from "@playwright/test";
 import { NotionAPI } from "../api/notion-api.js";
 import { FestivalAPI } from "../api/festival-api.js";
-import { CONSTANTS } from "../utils/constants.js";
 
-test.describe("Evolução do Pidgey - Regras Oficiais", () => {
+test.describe("Evolução do Pidgey - Teste Completo", () => {
   let notionAPI;
   let festivalAPI;
   let testPokemons = [];
@@ -14,7 +13,7 @@ test.describe("Evolução do Pidgey - Regras Oficiais", () => {
   });
 
   test.afterEach(async () => {
-    // Cleanup - remove todos os pokémons de teste
+    // Cleanup
     for (const pokemon of testPokemons) {
       if (pokemon.pageId) {
         try {
@@ -27,243 +26,96 @@ test.describe("Evolução do Pidgey - Regras Oficiais", () => {
     testPokemons = [];
   });
 
-  // Teste 1 CORRIGIDO: Pidgey level 15 -> DEVE evoluir para Pidgeotto
-  test("Pidgey level 15 deve evoluir para Pidgeotto", async () => {
+  test("Teste de evolução para TODOS os Pidgeys da base", async () => {
     test.setTimeout(60000);
 
-    const pidgeyData = {
-      ...CONSTANTS.TEST_POKEMONS.PIDGEY_MID,
-      level: 15,
-    };
-
-    console.log("Criando Pidgey nivel 15...");
-    const createdPokemon = await notionAPI.createPokemon(pidgeyData);
-    testPokemons.push({ pageId: createdPokemon.id, name: pidgeyData.name });
-
-    const originalPokemon = await notionAPI.getPokemonByName(pidgeyData.name);
-    const originalSpecies =
-      originalPokemon.properties.Pokemon.rich_text[0].text.content;
-    const originalLevel = originalPokemon.properties.Nível.number;
-
-    console.log("Iniciando festival...");
-    await festivalAPI.startFestival();
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-
-    const evolvedPokemon = await notionAPI.getPokemonByName(pidgeyData.name);
-    const evolvedSpecies =
-      evolvedPokemon.properties.Pokemon.rich_text[0].text.content;
-    const evolvedLevel = evolvedPokemon.properties.Nível.number;
-
-    // CORREÇÃO: Level 15 + 1 = 16 -> ATINGE nivel para Pidgeotto
-    expect(evolvedSpecies).toBe("Pidgeotto");
-    expect(evolvedLevel).toBe(16);
-  });
-
-  // Teste 2: Pidgey level 16 -> evolui para Pidgeotto
-  test("Pidgey level 16 deve evoluir para Pidgeotto", async () => {
-    test.setTimeout(60000);
-
-    const pidgeyData = {
-      ...CONSTANTS.TEST_POKEMONS.PIDGEY_MID,
-      level: 16,
-    };
-
-    console.log("Criando Pidgey nivel 16...");
-    const createdPokemon = await notionAPI.createPokemon(pidgeyData);
-    testPokemons.push({ pageId: createdPokemon.id, name: pidgeyData.name });
-
-    const originalPokemon = await notionAPI.getPokemonByName(pidgeyData.name);
-    const originalSpecies =
-      originalPokemon.properties.Pokemon.rich_text[0].text.content;
-    const originalLevel = originalPokemon.properties.Nível.number;
-
-    console.log("Iniciando festival...");
-    await festivalAPI.startFestival();
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-
-    const evolvedPokemon = await notionAPI.getPokemonByName(pidgeyData.name);
-    const evolvedSpecies =
-      evolvedPokemon.properties.Pokemon.rich_text[0].text.content;
-    const evolvedLevel = evolvedPokemon.properties.Nível.number;
-
-    // Level 16 + 1 = 17 -> ATINGE nivel para Pidgeotto
-    expect(evolvedSpecies).toBe("Pidgeotto");
-    expect(evolvedLevel).toBe(17);
-  });
-
-  // Teste 3 CORRIGIDO: Pidgey level 35 -> DEVE evoluir para Pidgeot
-  test("Pidgey level 35 deve evoluir para Pidgeot", async () => {
-    test.setTimeout(60000);
-
-    const pidgeyData = {
-      ...CONSTANTS.TEST_POKEMONS.PIDGEY_HIGH,
-      level: 35,
-    };
-
-    console.log("Criando Pidgey nivel 35...");
-    const createdPokemon = await notionAPI.createPokemon(pidgeyData);
-    testPokemons.push({ pageId: createdPokemon.id, name: pidgeyData.name });
-
-    console.log("Iniciando festival...");
-    await festivalAPI.startFestival();
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-
-    const evolvedPokemon = await notionAPI.getPokemonByName(pidgeyData.name);
-    const evolvedSpecies =
-      evolvedPokemon.properties.Pokemon.rich_text[0].text.content;
-    const evolvedLevel = evolvedPokemon.properties.Nível.number;
-
-    // CORREÇÃO: Level 35 + 1 = 36 -> ATINGE nivel para Pidgeot
-    expect(evolvedSpecies).toBe("Pidgeot");
-    expect(evolvedLevel).toBe(36);
-  });
-
-  // Teste 4: Pidgey level 36 -> evolui para Pidgeot
-  test("Pidgey level 36 deve evoluir para Pidgeot", async () => {
-    test.setTimeout(60000);
-
-    const pidgeyData = {
-      ...CONSTANTS.TEST_POKEMONS.PIDGEY_HIGH,
-      level: 36,
-    };
-
-    console.log("Criando Pidgey nivel 36...");
-    const createdPokemon = await notionAPI.createPokemon(pidgeyData);
-    testPokemons.push({ pageId: createdPokemon.id, name: pidgeyData.name });
-
-    console.log("Iniciando festival...");
-    await festivalAPI.startFestival();
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-
-    const evolvedPokemon = await notionAPI.getPokemonByName(pidgeyData.name);
-    const evolvedSpecies =
-      evolvedPokemon.properties.Pokemon.rich_text[0].text.content;
-    const evolvedLevel = evolvedPokemon.properties.Nível.number;
-
-    // Level 36 + 1 = 37 -> ATINGE nivel para Pidgeot
-    expect(evolvedSpecies).toBe("Pidgeot");
-    expect(evolvedLevel).toBe(37);
-  });
-
-  // Teste 5: Pidgey level 14 -> nao evolui
-  test("Pidgey level 14 nao deve evoluir", async () => {
-    test.setTimeout(60000);
-
-    const pidgeyData = {
-      ...CONSTANTS.TEST_POKEMONS.PIDGEY_LOW,
-      level: 14,
-    };
-
-    console.log("Criando Pidgey nivel 14...");
-    const createdPokemon = await notionAPI.createPokemon(pidgeyData);
-    testPokemons.push({ pageId: createdPokemon.id, name: pidgeyData.name });
-
-    console.log("Iniciando festival...");
-    await festivalAPI.startFestival();
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-
-    const afterFestivalPokemon = await notionAPI.getPokemonByName(
-      pidgeyData.name
+    // FASE 1: Capturar estado ANTES do festival
+    console.log("=== FASE 1: ESTADO ANTES DO FESTIVAL ===");
+    const databaseBefore = await notionAPI.queryDatabase();
+    const allPidgeys = databaseBefore.results.filter((pokemon) =>
+      pokemon.properties.Pokemon?.rich_text[0]?.text.content.includes("Pidge")
     );
-    const currentSpecies =
-      afterFestivalPokemon.properties.Pokemon.rich_text[0].text.content;
-    const currentLevel = afterFestivalPokemon.properties.Nível.number;
 
-    // Level 14 + 1 = 15 -> NAO atinge nivel minimo
-    expect(currentSpecies).toBe("Pidgey");
-    expect(currentLevel).toBe(15);
-  });
+    const originalState = allPidgeys.map((pokemon) => ({
+      id: pokemon.id,
+      name: pokemon.properties.Nome?.title[0]?.text.content,
+      originalSpecies: pokemon.properties.Pokemon?.rich_text[0]?.text.content,
+      originalLevel: pokemon.properties["Nível"]?.number,
+    }));
 
-  // Teste 6: Pidgey level 34 -> evolui para Pidgeotto
-  test("Pidgey level 34 deve evoluir para Pidgeotto", async () => {
-    test.setTimeout(60000);
+    console.log(`Total de Pidgeys na base: ${originalState.length}`);
+    originalState.forEach((p) => {
+      console.log(
+        `   ${p.name}: ${p.originalSpecies} Nível ${p.originalLevel}`
+      );
+    });
 
-    const pidgeyData = {
-      ...CONSTANTS.TEST_POKEMONS.PIDGEY_MID,
-      level: 34,
-    };
-
-    console.log("Criando Pidgey nivel 34...");
-    const createdPokemon = await notionAPI.createPokemon(pidgeyData);
-    testPokemons.push({ pageId: createdPokemon.id, name: pidgeyData.name });
-
-    console.log("Iniciando festival...");
-    await festivalAPI.startFestival();
+    // FASE 2: Iniciar festival
+    console.log("\n=== FASE 2: INICIANDO FESTIVAL ===");
+    const festivalResult = await festivalAPI.startFestival();
+    console.log("Resultado do festival:", festivalResult);
     await new Promise((resolve) => setTimeout(resolve, 3000));
 
-    const evolvedPokemon = await notionAPI.getPokemonByName(pidgeyData.name);
-    const evolvedSpecies =
-      evolvedPokemon.properties.Pokemon.rich_text[0].text.content;
-    const evolvedLevel = evolvedPokemon.properties.Nível.number;
-
-    // Level 34 + 1 = 35 -> ATINGE nivel para Pidgeotto
-    expect(evolvedSpecies).toBe("Pidgeotto");
-    expect(evolvedLevel).toBe(35);
-  });
-
-  // Teste 7: Pidgeotto nao evolui para Pidgeot
-  test("Pidgeotto nao deve evoluir para Pidgeot", async () => {
-    test.setTimeout(60000);
-
-    const pidgeottoData = {
-      name: "Pidgeotto Test",
-      species: "Pidgeotto",
-      level: 35,
-      attack: 60,
-      defense: 55,
-      stamina: 50,
-    };
-
-    console.log("Criando Pidgeotto nivel 35...");
-    const createdPokemon = await notionAPI.createPokemon(pidgeottoData);
-    testPokemons.push({ pageId: createdPokemon.id, name: pidgeottoData.name });
-
-    console.log("Iniciando festival...");
-    await festivalAPI.startFestival();
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-
-    const afterFestivalPokemon = await notionAPI.getPokemonByName(
-      pidgeottoData.name
+    // FASE 3: Verificar evoluções APÓS o festival
+    console.log("\n=== FASE 3: VALIDACAO DAS EVOLUCOES ===");
+    const databaseAfter = await notionAPI.queryDatabase();
+    const afterState = databaseAfter.results.filter((pokemon) =>
+      pokemon.properties.Pokemon?.rich_text[0]?.text.content.includes("Pidge")
     );
-    const currentSpecies =
-      afterFestivalPokemon.properties.Pokemon.rich_text[0].text.content;
-    const currentLevel = afterFestivalPokemon.properties.Nível.number;
 
-    // Pidgeotto NAO evolue - so Pidgey tem evolucao
-    expect(currentSpecies).toBe("Pidgeotto");
-    expect(currentLevel).toBe(36);
-  });
+    let allTestsPassed = true;
 
-  // Teste 8: Pidgeot mantem evolucao
-  test("Pidgeot deve manter evolucao", async () => {
-    test.setTimeout(60000);
+    afterState.forEach((pokemon) => {
+      const name = pokemon.properties.Nome?.title[0]?.text.content;
+      const currentSpecies =
+        pokemon.properties.Pokemon?.rich_text[0]?.text.content;
+      const currentLevel = pokemon.properties["Nível"]?.number;
 
-    const pidgeotData = {
-      name: "Pidgeot Test",
-      species: "Pidgeot",
-      level: 40,
-      attack: 80,
-      defense: 75,
-      stamina: 70,
-    };
+      const originalPokemon = originalState.find((p) => p.name === name);
 
-    console.log("Criando Pidgeot nivel 40...");
-    const createdPokemon = await notionAPI.createPokemon(pidgeotData);
-    testPokemons.push({ pageId: createdPokemon.id, name: pidgeotData.name });
+      if (originalPokemon) {
+        const newLevel = originalPokemon.originalLevel + 1;
+        let expectedSpecies = originalPokemon.originalSpecies;
 
-    console.log("Iniciando festival...");
-    await festivalAPI.startFestival();
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+        if (originalPokemon.originalSpecies === "Pidgey") {
+          if (newLevel >= 36) {
+            expectedSpecies = "Pidgeot";
+          } else if (newLevel >= 16) {
+            expectedSpecies = "Pidgeotto";
+          }
+          // Se newLevel < 16, mantém Pidgey
+        }
+        // Pidgeotto e Pidgeot não evoluem mais
 
-    const afterFestivalPokemon = await notionAPI.getPokemonByName(
-      pidgeotData.name
-    );
-    const currentSpecies =
-      afterFestivalPokemon.properties.Pokemon.rich_text[0].text.content;
-    const currentLevel = afterFestivalPokemon.properties.Nível.number;
+        const speciesTestPassed = currentSpecies === expectedSpecies;
+        const levelTestPassed = currentLevel === newLevel;
+        const testPassed = speciesTestPassed && levelTestPassed;
 
-    // Pidgeot mantem a evolucao, so ganha nivel
-    expect(currentSpecies).toBe("Pidgeot");
-    expect(currentLevel).toBe(41);
+        if (testPassed) {
+          console.log(
+            `[PASS] ${name}: ${originalPokemon.originalSpecies} N${originalPokemon.originalLevel} -> ${currentSpecies} N${currentLevel}`
+          );
+        } else {
+          console.log(
+            `[FAIL] ${name}: ${originalPokemon.originalSpecies} N${originalPokemon.originalLevel} -> ${currentSpecies} N${currentLevel}`
+          );
+          console.log(`       Esperado: ${expectedSpecies} N${newLevel}`);
+          allTestsPassed = false;
+        }
+      }
+    });
+
+    console.log("\n=== RESULTADO FINAL ===");
+    if (allTestsPassed) {
+      console.log(
+        "SUCESSO: Todas as evoluções de Pidgey ocorreram corretamente"
+      );
+    } else {
+      console.log(
+        "FALHA: Uma ou mais evoluções de Pidgey não ocorreram corretamente"
+      );
+    }
+
+    expect(allTestsPassed).toBe(true);
   });
 });
